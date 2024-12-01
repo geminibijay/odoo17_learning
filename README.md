@@ -91,8 +91,6 @@ odoo17_day_wise_learning
     - Add icons and further metadata to the manifest file as needed.
     - Expand your module's functionality by linking it with other Odoo apps like Sales or Inventory.
 
-
-
 ### 16. **Set up the Patient Model (hospital_patient.py)**:
    - You imported `API` fields and `models` from Odoo.
    - Created a class `HospitalPatient`, inheriting from `models.Model`.
@@ -132,3 +130,83 @@ odoo17_day_wise_learning
 ### 25. **Final Testing and Debugging**:
    - You logged out of the superuser mode and tested the patient menu, confirming that the action and the related views were working as expected.
    - Verified the patient creation functionality, ensuring the data could be saved correctly.
+---
+
+#Day_2
+
+### 26. Odoo 17: Working with Views in Hospital Management System (HMS)
+- **Creating and Managing Records**: When you create a new patient, fields such as name, date of birth, and gender are recorded, and the record's ID is displayed in the URL.
+- **Metadata in Debug Mode**: By enabling the debug mode, you can access metadata like the create user, create date, last modification user, and modification date from the "View Metadata" option in the debugger.
+
+### 27. Auto-Generated Views
+- If no views are defined for a model, Odoo automatically generates dynamic views based on the model's fields.
+- This dynamic view can be edited by clicking "Edit View Form" in the debugger, but it's better to define your own views for better control.
+
+### 28. Defining Tree View in Odoo
+- **Creating Tree View**: To define a tree view for the `hospital.patient` model, use the `<tree>` tag in XML. Define the model and link the fields to be displayed in the view.
+- **Upgrading the Module**: After defining the tree view, upgrade the module to see the new view in the UI.
+
+### 29. Defining Form View in Odoo
+- **Creating Form View**: Similar to the tree view, you can define a form view using the `<form>` tag. Ensure to use `<group>` tags to organize fields and `<sheet>` tag for layout control.
+- **Grouping Fields**: To organize fields into multiple columns, use nested `<group>` tags inside the `<form>` tag. This can help in visually dividing the fields into sections.
+  
+### 30. Using Optional Fields in Views
+- **Optional Show/Hide**: To manage field visibility, you can use the `optional_show` and `optional_hide` attributes. By default, hidden fields are not visible but can be toggled by the user.
+
+### 31. Odoo Chatter for Tracking Changes
+- **Chatter for Change Tracking**: In Odoo, the chatter section tracks changes made to a record (e.g., name changes, phone number updates).
+- **Implementing Chatter in Custom Models**: To add chatter functionality, inherit the `mail.thread` class in your model. This allows tracking of changes and updates in the record.
+
+### 32. Adding Dependencies in Odoo Modules
+- **Inheriting Mail.Thread**: When inheriting `mail.thread` to enable chatter, you need to add the `mail` module as a dependency in the manifest file (`depends`).
+- **Upgrading the Module**: After adding the inheritance and dependencies, upgrade the module to apply changes.
+Here are the notes for your Odoo practice (starting from serial number 33):
+
+---
+
+**33. Inheriting `mail.thread` and Adding Chatter**
+- The `mail.thread` module has been added as a dependency, which adds several new fields to the model (like `message_follower_ids`, `message_ids`).
+- To include the chatter in the view, copy the chatter section from the Odoo source code.
+- Add the chatter code within the form view, after the `sheet` tag.
+- After a restart, the "Send Message" and "Log Note" options appear in the form view.
+
+---
+
+**34. Tracking Field Changes**
+- To track changes in a field, set `tracking=True` in the field definition.
+- After adding the tracking attribute, restart the system and upgrade the module to see changes reflected in the "Log Note" and "Send Message" sections.
+- Ensure tracking is added to fields like `name`, `date_of_birth`, and `gender` to log updates.
+
+---
+
+**35. Adding Multiple Views for a Model**
+- You can define multiple views (e.g., read-only views) for the same model.
+- When creating a new view, ensure a unique `ID` is used for each action.
+- The system will throw an error if the action is not defined; ensure the action is correctly linked in the XML.
+  
+---
+
+**36. Restricting Edit Permissions in Read-Only Views**
+- To create a read-only version of the view, specify `create="0"` and `edit="0"` in the XML.
+- This restricts the user from creating or editing records in the view.
+
+---
+
+**37. Sequence and Priority in Views**
+- When defining multiple views for the same model, use the `sequence` attribute to determine which view is shown by default. Odoo will select the view with the lowest sequence number if no specific view is linked.
+- Alternatively, use `priority` to control the order of views if sequence values are the same.
+
+---
+
+**38. Using `view_ids` in Actions**
+- Use the `view_ids` attribute in the action to specify which views should be shown for the action.
+- This allows you to link different tree and form views with the action.
+- To hide the "New" button in a view, set `create="0"` in the tree and form view.
+
+---
+
+**39. Module Upgrade and Troubleshooting**
+- When making changes to views or adding new actions, always remember to upgrade the module to apply those changes.
+- If an error occurs, check the action definitions and ensure that any new views or menu items are linked correctly.
+
+---
